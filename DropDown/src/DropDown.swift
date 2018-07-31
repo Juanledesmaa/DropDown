@@ -1016,17 +1016,19 @@ extension DropDown: UITableViewDataSource, UITableViewDelegate {
 			cell.accessibilityIdentifier = localizationKeysDataSource[index]
 		}
 		
-		cell.optionLabel.textColor = textColor
-		cell.optionLabel.font = textFont
-		cell.selectedBackgroundColor = selectionBackgroundColor
-		
-		if let cellConfiguration = cellConfiguration {
-			cell.optionLabel.text = cellConfiguration(index, dataSource[index])
+		if customCellConfiguration != nil {
+			customCellConfiguration?(index, dataSource[index], cell)
 		} else {
-			cell.optionLabel.text = dataSource[index]
+			cell.optionLabel.textColor = textColor
+			cell.optionLabel.font = textFont
+			cell.selectedBackgroundColor = selectionBackgroundColor
+			
+			if let cellConfiguration = cellConfiguration {
+				cell.optionLabel.text = cellConfiguration(index, dataSource[index])
+			} else {
+				cell.optionLabel.text = dataSource[index]
+			}
 		}
-		
-		customCellConfiguration?(index, dataSource[index], cell)
 	}
 
 	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
